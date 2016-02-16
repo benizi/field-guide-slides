@@ -80,7 +80,7 @@ layout: false
   - Run it
   - Update it
   - Repeat
-- [The Twelve-Factor App](http://12factor.net)
+- [The Twelve-Factor App][12factor]
 
 ???
 
@@ -90,6 +90,8 @@ layout: false
 Types of scaling have different answers to "We have more traffic. What do we do?"
 - Vertically scalable => use a bigger server
 - Horizontally scalable => add more servers
+
+[12factor]: http://12factor.net
 
 ---
 
@@ -367,6 +369,7 @@ Atomic commits: CVS is per-file, so can get into broken, inconsistent state
       - Assume familiarity with Unix-like systems
   - Simple data model (conceptually)
   - Extensions in any language
+  - `HEAD` - the current commit
 - Songs and calls:
   - `git clone https://github.com/user/project` - initial fetch
   - `git push origin master` - update the remote
@@ -393,11 +396,11 @@ Atomic commits: CVS is per-file, so can get into broken, inconsistent state
 - Distinguishing features:
   - Written in Python
   - Emphasis on speed (hence the name)
+  - `tip` - current revision
 - Songs and calls:
   - `hg clone ssh://hg@bitbucket.org/benizi/testhg`
   - `hg pull` - fetch remote revisions
-
-TODO
+  - `hg summary` - show current state
 
 ???
 
@@ -445,58 +448,63 @@ $ git checkout bf90e1dad
 - Has kind of "lost", but keeps Git on its toes
   - Made git improve its error messages (slightly)
   - Made git focus on cross-platform (slightly)
+--
 
+- Holy war, so forget I said it lost...
 ---
 
 # SCM - GitHub
 
-- Scientific name: Where software is built
+- Scientific name: [GitHub][github] - Where software is built
 - Songs and calls:
   - Pull Requests (PRs)
   - Issues and wikis
   - Gists - "pastebin" functionality
   - pages - Simple static site hosting
+- Range:
+  - Every software project ever
+      - Even ones not hosted there have mirrors
+--
 
-TODO
+- And Bitbucket
+  - Originally GitHub : git :: Bitbucket : hg
+  - Now Git is default on Bitbucket, too
+  - Differentiator:
+      - Free private repositories
 
----
+<!--TODO-->
 
-# SCM - Bitbucket
-
-- Scientific name:
-- Originally git : GitHub :: hg : Bitbucket
-- Now Git is default on Bitbucket, too
-- Differentiator:
-  - Free private repositories
-
-TODO
-
+[github]: https://github.com/
 [bitbucket]: https://bitbucket.org/
 
 ---
 
 # SCM - GitLab
 
-- Scientific name: Code, test, and deploy together
-
-TODO
+- Scientific name: [GitLab][gitlab] - Code, test, and deploy together
+- Distinguishing features:
+  - Choice of dependence vs security:
+      - self-hosted (open source)
+      - self-hosted "Enterprise Edition"
+      - SaaS - multi-tenant
+      - hosted - private instance
 
 ???
 
 - GitHub = SPOF
   - Host GitHub yourself.
+--
+
+- And [Gitolite][gitolite]
+  - More like Subversion
+  - Useful when you can...
+      - easily host it yourself
+      - and/or already have a machine with shell access
+- Others
 
 [gitlab]: https://about.gitlab.com/
-
----
-
-# SCM - Gitolite
-
-- Scientific name:
-
 [gitolite]: http://gitolite.com/gitolite/
 
-TODO - earlier Gitlab-alike
 ---
 
 # Testing
@@ -518,12 +526,20 @@ TODO - earlier Gitlab-alike
   - Terminal output: <code>.pass[....].fail[F].pass[....].pending[&#x2A;].pass[....]</code>
   - Must be fast
   - Reduce developer friction
-
 - Given a specific set of inputs, something specific should happen
-- Can test functionality, error-handling
-- Needs a specification
+  - Can test functionality ("happy path")
+  - Can test edge cases
 
-TODO
+```java
+public class TestAdder() {
+  @Test
+  public void addsNumbers() {
+    assertEquals(10, adder.add(1, 9));
+  }
+}
+```
+
+<!--TODO-->
 
 ???
 
@@ -541,18 +557,27 @@ TODO
   - Selenium, Webdriver
   - Cucumber: "Given ...", "When ...", "Then ..."
   - Flaky tests
-
-TODO
+- Innovations:
+  - Testing asynchronous HTML/JavaScript/DOM soup is hard
+  - Use real or simulated web browsers
+      - WebKit is commonly used as a base
+      - Farms of test browser servers
+      - Rhino (JS engine) popular for unit-like HTML testing
 
 ???
 
 - Google Translate: integrated testing -> porch testing?
+
+- HTMLUnit = much faster, but limited
 
 ---
 
 # Property testing
 
 - Scientific name: probatio rerum
+- Basic idea:
+  - Generate a bunch of random inputs/actions
+  - Verify that properties hold afterward
 - Related concepts:
   - Generative testing
 - Distinguishing features:
@@ -560,119 +585,78 @@ TODO
 - Range:
   - Mostly functional languages
 - Subspecies:
-  - QuickCheck
-
+  - QuickCheck - Haskell, Erlang
+  - clojure/test.check
 ???
 
 - Google Translate: property testing => "~ things trials"
 
 - One of my favorite techniques that isn't widespread.
-
 ---
 
-# Regression testing
+# Property testing
 
-- Scientific name:
+Examples from Erlang
 
+```erlang
+% generator:
+time_of_day() -> {choose(1,12), choose(0,59), oneof([am,pm])}.
+
+% example from Quviq docs:
+prop_reverse() ->
+  ?FORALL(List,list(int()),
+    lists:reverse(lists:reverse(List)) == List).
+```
+
+Doesn't have to test Erlang code:
+- [Using QuickCheck to find a bug in LevelDB (slides)][qc-slides]
+
+[qc-slides]: http://htmlpreview.github.io/?https://raw.github.com/strangeloop/lambdajam2013/master/slides/Norton-QuickCheck.html
 ---
 
-# Smoke testing
+# Other kinds of testing
 
-- Scientific name:
+- Regression testing
+  - Test to ensure known bugs don't resurface
+  - Usually unit or full-stack tests
+- Smoke testing
+  - More monitoring than testing
+  - Examples:
+      - after deploy, ensure error rates don't go up
+      - Ping testing (ensure servers are up)
 
 ---
 
 # Problem tracking
 
 - Issue tracking
-  - Internal, future, Business
+  - Internal planning, future, Business
 - Exception tracking
-  - External, past, DevOps
+  - External issues, past, DevOps
 
 ---
 
 # Issue tracking
 
-- Olden times
-  - Bugzilla
-  - Trac
-- Web 2.0
-  - Trello
-  - Pivotal Tracker
-- JIRA
-- GitHub
+- Subspecies:
+  - [Trello][trello]
+  - [Pivotal Tracker][pivotal]
+  - JIRA
+  - GitHub
+
+???
+
+[pivotal]: https://www.pivotaltracker.com/n/projects/1537845
 
 ---
 
 # Exception tracking
 
-- Sentry
-- Bugsnag
-- Honeybadger
-- Airbrake
-
----
-
-# Integration
-
-- With other services
-  - Webhooks
-  - JSON APIs
-- Continuous integration
-
----
-
-# Integration with other services
-
-- Webhooks
-  - HTTP + JSON
-    - When an event occurs on Service A, POST a small JSON payload to Service B
-    - Usually has a configuration interface
-- JSON APIs
-  - More possibilities than Webhooks
-
----
-
-# Chat Ops
-
-- HipChat
-- Slack
-- IRC
-
----
-
-# Continuous Integration
-
-- Jenkins
-- Travis
-- Codeship
-- CircleCI
-
----
-
-
-# Jenkins
-
-- Scientific name:
-- Range:
-  - Originally Java projects
-  - Now everywhere
-
-TODO
-
----
-
-# Travis
-
-- Scientific name:
-
----
-
-# Other CI
-
-- Codeship
-- CircleCI
-TODO
+- Subspecies:
+  - Sentry
+  - Bugsnag
+  - [Honeybadger][honeybadger]
+  - Airbrake
 
 ---
 
@@ -687,44 +671,150 @@ TODO
 # Virtual Machines
 
 - Contains a whole O/S
-- Major providers:
+- Subspecies:
   - VMware
   - VirtualBox
   - QEMU
 - Range:
   - VMware - Windows, security, data centers
   - VirtualBox - FOSS
-
-TODO
+  - QEMU - research, non-x86
+- Tools:
+  - Vagrant
 
 ---
 
 # Containers
 
-- Shares the kernel with the host
-- Isolation through namespaces (Linux), zones (Solaris), jails (BSDen)
+- Distinguishing features:
+  - Amazingly light-weight
+  - Shares the kernel with the host
+      - Can't do, e.g., Windows guest on Linux host
+- Subspecies:
+  - LXC - Linux Containers - namespaces
+  - Zones - Solaris-descendants
+  - Jails - BSDs
+- Innovations:
+  - Copy-on-Write filesystems
 
-TODO
+<!--TODO-->
+
+???
+
+Subspecies by isolation type
 
 ---
 
 # Docker
 
-- Standardized format for container deployment
+- Distinguishing features:
+  - The new hotness
+  - Written in Go
+- Innovations:
+  - Standardized format for container deployment
+  - Docker : Containers :: Git : Code
+      - Repeatability
+  - [Docker Hub][dockerhub]
+      - Unlimited public repositories
+      - One free private repository
 
-TODO
+???
+
+[dockerhub]: 
+demos:
+
+- launch a PostgreSQL server
+- launch a Redis server
+- compile something in Go
+
+---
+
+# Integration
+
+- With other services
+  - Webhooks
+  - JSON APIs
+- Continuous integration
+- Team communication (ChatOps)
+
+---
+
+## Integration with other services
+
+- Webhooks
+  - HTTP + JSON
+      - When an event occurs on Service A
+          - POST a small JSON payload to Service B
+  - Usually has a configuration interface
+- JSON APIs
+  - More possibilities than Webhooks
+
+---
+
+# Continuous Integration
+
+- Distinguishing features:
+  - Before accepting code, run the tests
+  - The tests should catch issues before users do
+- Songs and calls:
+  - Ship it squirrel
+  - Never deploy untested code
+  - Never merge untested code
+- Subspecies:
+  - Jenkins
+  - Travis CI
+  - Codeship
+  - CircleCI
+  - [Containership][containership]
+
+[containership]: https://containership.io/
+
+---
+
+# CI species
+
+- Jenkins
+  - Range:
+      - Originally Java projects
+      - Now everywhere
+  - Innovations:
+      - Plugins for everything
+      - Scriptable with Groovy, Java plugins
+--
+- Travis
+  - Range:
+      - FOSS GitHub projects [travis-ci.org](https://travis-ci.org)
+      - Private projects [travis-ci.com](https://travis-ci.com)
+  - Innovations:
+      - Single file configuration
+--
+- Others: Codeship, CircleCI, Containership
+---
+
+# Chat Ops
+
+- Subspecies:
+  - HipChat
+  - Slack
+  - IRC
+
+???
+
+Your team is on some dedicated chat system anyway,
+why not surface useful information in the same
+interface.
 
 ---
 
 # Example App
 
 - Written in [Elixir][elixir] using [Phoenix Framework][phoenix]
-- GitHub for SCM [benizi/field-guide-app][github-app]
-- Honeybadger for exception tracking
-- Travis CI
-- Heroku for hosting
+- GitHub for SCM - [benizi/field-guide-app][github-app]
+- [Honeybadger][honeybadger] for exception tracking
+- [Trello][trello] for issue tracking
+- [Travis CI][travis] for continuous integration [
+- Heroku for hosting [benizi-field-guide-app][heroku-app]
 - Slack integration
-- 
 
 TODO
 
@@ -733,6 +823,10 @@ TODO
 [elixir]: http://elixir-lang.org/
 [phoenix]: http://www.phoenixframework.org/
 [github-app]: https://github.com/benizi/field-guide-app
+[honeybadger]: https://app.honeybadger.io/projects/46764/faults
+[trello]: https://trello.com/b/KdQQf09L/field-guide
+[travis]: https://travis-ci.org/benizi/field-guide-app
+[heroku-app]: https://benizi-field-guide-app.herokuapp.com/
 
 ---
 
@@ -742,3 +836,6 @@ TODO
   - Great for finding categorized tools
   - Most mentioned here are in the [DevOps category](http://stackshare.io/devops)
 - Similar: [alternativeTo.net](http://alternativeto.net), e.g. [Jenkins](http://alternativeto.net/software/jenkins/?platform=linux)
+- [Shenoy's Git Tips and Tricks slides][shenoy-slides]
+
+[shenoy-slides]: https://speakerdeck.com/alexshenoy/git-tips-and-tricks
