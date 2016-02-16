@@ -20,7 +20,15 @@ benizi -
 
 ---
 
-layout: true
+# Disclaimers
+
+- I'm very opinionated about software.
+  - It's all terrible.
+- I usually think I'm right.
+  - Until I see something I think is more correct.
+      - Then I'm right again.
+- I'm a decent speaker (I think), but bad presenter.
+  - Odds are high I'm editing these slides right now.
 
 ???
 
@@ -29,38 +37,33 @@ Perl is awesome
 => Perl is read-once
 => Oh, hey, Perl 6 is out.
 
-- Perl - young, impressionable
-- PHP - ooh, HTML and code together!
-- C# - wait, this is ...
-- Ruby - ahh, I'm supposed to care about craftsmanship
-- Java/C++ - wwwwhhhhhyyyy?
-
 ---
 
 # Disclaimers
 
-- I'm very opinionated about software.
-  - It's all terrible.
-- I usually think I'm right.
---
-
-  - Until I see something I think is more correct.
---
-
-      - Then I'm right again.
---
 - Biases:
   - Used Linux almost exclusively since 1999
 --
 
   - But remember: it's terrible.
+  - Some professional Windows experience, but almost all FOSS.
 --
 
 - Languages:
-  - Professional: Perl => PHP => C# => Ruby => Java/C++
-  - Personal: mostly functional
+  - Professional:
+      - Perl => PHP => C# => Ruby => Java/C++
+  - Personal:
+      - mostly functional
+          - Clojure, Haskell, Erlang, Elixir, Rust, OCaml
+      - also practical
+          - Go, Node.js, Python, VimL, Zsh, Awk, Sed
+???
 
-Clojure, Haskell, Erlang, Elixir, Rust, Go, OCaml, Node.js, Python, VimL, Zsh
+- Perl - young, impressionable
+- PHP - ooh, HTML and code together!
+- C# - wait, this is ...
+- Ruby - ahh, I'm supposed to care about craftsmanship
+- Java/C++ - wwwwhhhhhyyyy?
 ---
 
 layout: false
@@ -77,7 +80,7 @@ layout: false
   - Run it
   - Update it
   - Repeat
-- More at [12 Factors](http://12factor.net)
+- [The Twelve-Factor App](http://12factor.net)
 
 ???
 
@@ -100,7 +103,7 @@ Types of scaling have different answers to "We have more traffic. What do we do?
 
 ---
 
-# Categories of tools/techniques
+# Tools and techniques
 
 - Source Code Management
 - Testing
@@ -122,13 +125,13 @@ These are intertwined.
 - CVS, Subversion (centralized)
 - Git, Mercurial (decentralized)
 - GitHub, Bitbucket (centralized decentralized)
-- Gitlab, Gitolite (self-hosted)
+- GitLab, Gitolite (self-hosted)
 
 ---
 
 # SCM - Copies
 
-- Scientific name: copius pasticus
+- Scientific name: copyus pasteicus
 - Distinguishing features:
   - Slightly modified directory or filenames
       - `site` => `new.site.2016-02-15`
@@ -311,29 +314,44 @@ done
 - Distinguishing features:
   - `.svn` directories throughout (historically)
   - Centralized server
+  - `trunk`, `branches`, `tags`
+      - branches and tags are just conventions
 - Songs and calls:
   - "CVS done right"
   - `svnadmin create root`
   - `svn help {command}`
-- Innovations:
-  - Multiple storage backends
-  - First one to have an online ["The &#x5b;X&#x5d; Book"](http://svnbook.red-bean.com/)
-- Not dead yet
-
-TODO
 
 ???
 
 - Linus famously(?) derided it:
+  - "Because my hatred of CVS has meant that I see
+    Subversion as being the most pointless project
+ever started, because the whole slogan for the
+Subversion for a while was 'CVS done right' or
+something like that. And if you start with that
+kind of slogan, there is nowhere you can go. It's
+like, there is no way to do CVS right." - [Git wiki](https://git.wiki.kernel.org/index.php/LinusTalk200705Transcript)
 
-"Because my hatred of CVS has meant that I see Subversion as being the most
-pointless project ever started, because the whole slogan for the Subversion for
-a while was 'CVS done right' or something like that. And if you start with that
-kind of slogan, there is nowhere you can go. It's like, there is no way to do
-CVS right."
+---
 
-[Git wiki](https://git.wiki.kernel.org/index.php/LinusTalk200705Transcript)
+# SCM - SVN
 
+- Innovations:
+  - Multiple storage backends
+  - Atomic commits
+  - First one to have an online ["The &#x5b;X&#x5d; Book"](http://svnbook.red-bean.com/)
+  - Server side hooks
+      - No check-in without passing tests
+      - Enforced styles
+  - Properties
+      - `svn:executable`
+      - `svn:mime-type`
+      - `svn:keywords`
+- Not dead yet!
+
+???
+
+Atomic commits: CVS is per-file, so can get into broken, inconsistent state
 
 ---
 
@@ -341,38 +359,43 @@ CVS right."
 
 - Scientific name: Git - the stupid content tracker
 - Distinguishing features:
+  - Distributed - commits are local, push/pull syncs with other repo
+  - Entire history available locally
   - Contains much rope
   - Manuals are terse
       - [git-yield-ref(1) Manual Page][git-yield-ref] (parody!)
       - Assume familiarity with Unix-like systems
+  - Simple data model (conceptually)
+  - Extensions in any language
 - Songs and calls:
-  - `git clone https://github.com/user/project`
-  - `git push origin master`
-- Git is simple like monads are simple
-
-TODO
+  - `git clone https://github.com/user/project` - initial fetch
+  - `git push origin master` - update the remote
+  - `git rebase --interactive` - rewrite history
+  - Commit early, commit often
 
 ???
 
+- Git is simple like monads are simple
 - Spend years figuring out how to think in Git and it will reward you
 
+- commit early, commit often:
+    - It's almost always possible to get back to a state you've committed
+
 [git-yield-ref]: https://git-man-page-generator.lokaltog.net/#6d9d71fca5c14d7d38f61c4edfe6f523
+--
+- (more after introducing Mercurial)
 
 ---
 
-# SCM - Git
+# SCM - HG
 
-- Created when Linux kernel 
-
-TODO
-
----
-
-# SCM - Mercurial
-
-- Scientific name:
+- Scientific name: Mercurial
 - Distinguishing features:
   - Written in Python
+  - Emphasis on speed (hence the name)
+- Songs and calls:
+  - `hg clone ssh://hg@bitbucket.org/benizi/testhg`
+  - `hg pull` - fetch remote revisions
 
 TODO
 
@@ -381,6 +404,48 @@ TODO
 Git's simplicity prevents it from optimizing some
 things the way Mercurial does.  e.g. large files
 
+- `hg` = Mercur{y => ial} - get it?
+
+---
+
+# SCM - HG and Git
+
+- Many similarities
+  - Decentralized
+  - Complete history in every repository
+  - Hashes as identifiers
+- Competitive with Git in many ways
+  - Bigger emphasis on "usability"
+      - "friendlier":
+
+```
+$ hg ci -m 'Initial commit'
+abort: no username supplied
+*(use "hg config --edit" to set your username)
+```
+
+vs
+
+```
+$ git checkout bf90e1dad
+...
+*You are in a 'detached HEAD' state.
+...
+```
+
+---
+
+# SCM - HG and Git
+
+- Mercurial
+  - Better support for binary files
+  - Better support for large repositories
+      - Facebook's single repo
+  - Better support for shallow clones
+- Has kind of "lost", but keeps Git on its toes
+  - Made git improve its error messages (slightly)
+  - Made git focus on cross-platform (slightly)
+
 ---
 
 # SCM - GitHub
@@ -388,9 +453,9 @@ things the way Mercurial does.  e.g. large files
 - Scientific name: Where software is built
 - Songs and calls:
   - Pull Requests (PRs)
-- Integrated issues and wikis
-- Simple static site hosting
-- "pastebin" functionality
+  - Issues and wikis
+  - Gists - "pastebin" functionality
+  - pages - Simple static site hosting
 
 TODO
 
@@ -400,14 +465,19 @@ TODO
 
 - Scientific name:
 - Originally git : GitHub :: hg : Bitbucket
+- Now Git is default on Bitbucket, too
+- Differentiator:
+  - Free private repositories
 
 TODO
 
+[bitbucket]: https://bitbucket.org/
+
 ---
 
-# SCM - Gitlab
+# SCM - GitLab
 
-- Scientific name:
+- Scientific name: Code, test, and deploy together
 
 TODO
 
@@ -416,11 +486,15 @@ TODO
 - GitHub = SPOF
   - Host GitHub yourself.
 
+[gitlab]: https://about.gitlab.com/
+
 ---
 
 # SCM - Gitolite
 
 - Scientific name:
+
+[gitolite]: http://gitolite.com/gitolite/
 
 TODO - earlier Gitlab-alike
 ---
@@ -442,12 +516,14 @@ TODO - earlier Gitlab-alike
   - minimize external dependencies
 - Songs and calls:
   - Terminal output: <code>.pass[....].fail[F].pass[....].pending[&#x2A;].pass[....]</code>
-  - Reduce developer friction
   - Must be fast
+  - Reduce developer friction
 
 - Given a specific set of inputs, something specific should happen
 - Can test functionality, error-handling
 - Needs a specification
+
+TODO
 
 ???
 
@@ -582,6 +658,8 @@ TODO
   - Originally Java projects
   - Now everywhere
 
+TODO
+
 ---
 
 # Travis
@@ -608,17 +686,31 @@ TODO
 
 # Virtual Machines
 
+- Contains a whole O/S
+- Major providers:
+  - VMware
+  - VirtualBox
+  - QEMU
+- Range:
+  - VMware - Windows, security, data centers
+  - VirtualBox - FOSS
+
 TODO
 
 ---
 
 # Containers
 
+- Shares the kernel with the host
+- Isolation through namespaces (Linux), zones (Solaris), jails (BSDen)
+
 TODO
 
 ---
 
 # Docker
+
+- Standardized format for container deployment
 
 TODO
 
@@ -632,6 +724,7 @@ TODO
 - Travis CI
 - Heroku for hosting
 - Slack integration
+- 
 
 TODO
 
