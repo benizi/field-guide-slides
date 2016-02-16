@@ -465,14 +465,13 @@ $ git checkout bf90e1dad
   - Every software project ever
       - Even ones not hosted there have mirrors
 --
-
 - And Bitbucket
   - Originally GitHub : git :: Bitbucket : hg
   - Now Git is default on Bitbucket, too
   - Differentiator:
       - Free private repositories
 
-<!--TODO-->
+???
 
 [github]: https://github.com/
 [bitbucket]: https://bitbucket.org/
@@ -483,18 +482,16 @@ $ git checkout bf90e1dad
 
 - Scientific name: [GitLab][gitlab] - Code, test, and deploy together
 - Distinguishing features:
+  - Avoid GitHub SPOF
   - Choice of dependence vs security:
       - self-hosted (open source)
       - self-hosted "Enterprise Edition"
       - SaaS - multi-tenant
       - hosted - private instance
-
 ???
 
-- GitHub = SPOF
-  - Host GitHub yourself.
+- Host GitHub yourself.
 --
-
 - And [Gitolite][gitolite]
   - More like Subversion
   - Useful when you can...
@@ -631,32 +628,23 @@ Doesn't have to test Erlang code:
 
 - Issue tracking
   - Internal planning, future, Business
+  - Subspecies:
+      - [Trello][trello]
+      - [Pivotal Tracker][pivotal]
+      - JIRA
+      - GitHub
+--
 - Exception tracking
   - External issues, past, DevOps
-
----
-
-# Issue tracking
-
-- Subspecies:
-  - [Trello][trello]
-  - [Pivotal Tracker][pivotal]
-  - JIRA
-  - GitHub
+  - Subspecies:
+      - Sentry
+      - Bugsnag
+      - [Honeybadger][honeybadger]
+      - Airbrake
 
 ???
 
 [pivotal]: https://www.pivotaltracker.com/n/projects/1537845
-
----
-
-# Exception tracking
-
-- Subspecies:
-  - Sentry
-  - Bugsnag
-  - [Honeybadger][honeybadger]
-  - Airbrake
 
 ---
 
@@ -720,7 +708,8 @@ Subspecies by isolation type
 
 ???
 
-[dockerhub]: 
+[dockerhub]: https://hub.docker.com/
+
 demos:
 
 - launch a PostgreSQL server
@@ -814,9 +803,9 @@ interface.
 - [Trello][trello] for issue tracking
 - [Travis CI][travis] for continuous integration [
 - Heroku for hosting [benizi-field-guide-app][heroku-app]
-- Slack integration
+- [Slack][myslack] integration
 
-TODO
+<!--TODO-->
 
 ???
 
@@ -827,6 +816,7 @@ TODO
 [trello]: https://trello.com/b/KdQQf09L/field-guide
 [travis]: https://travis-ci.org/benizi/field-guide-app
 [heroku-app]: https://benizi-field-guide-app.herokuapp.com/
+[myslack]: https://benizi.slack.com/
 
 ---
 
